@@ -1,5 +1,7 @@
 package com.ok.service;
 
+import com.ok.common.Message;
+import com.ok.common.MessageType;
 import com.ok.po.User;
 
 import java.io.*;
@@ -20,11 +22,18 @@ public class UserService {
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
+            Message message = (Message)objectInputStream.readObject();
+
+            if(message.getMessageType()== MessageType.LOGIN_SUCCESS){
+                return true;
+            }else{
+                return false;
+            }
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return true;
+        return false;
     }
 }
