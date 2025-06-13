@@ -66,7 +66,16 @@ public class LoginView extends JFrame {
                 super.mouseClicked(e);
             }
         });
+
         registerJButton = new JButton("注册");
+        registerJButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                RegisterView registerView = new RegisterView();
+                registerView.createFrame();
+            }
+        });
+
         southJPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         southJPanel.add(loginJButton);
         southJPanel.add(registerJButton);

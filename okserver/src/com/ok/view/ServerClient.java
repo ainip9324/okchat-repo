@@ -53,19 +53,28 @@ public class ServerClient extends JFrame {
             //接收客户端的信息
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            User user = (User)objectInputStream.readObject();
+            Message requestMessage = (Message)objectInputStream.readObject();
 
-            //验证
-            Message message = new Message();
-            if(userDao.login(user.getUserName(),user.getPwd())!=null){
-                message.setMessageType(MessageType.LOGIN_SUCCESS);
-            }else{
-                message.setMessageType(MessageType.LOGIN_FAIL);
+            switch (requestMessage.getMessageType()){
+                case MessageType.LOGIN:{
+                    User user = requestMessage.getUser();
+                    //验证
+                    Message message = new Message();
+                    if(userDao.login(user.getUserName(),user.getPwd())!=null){
+                        message.setMessageType(MessageType.LOGIN_SUCCESS);
+                    }else{
+                        message.setMessageType(MessageType.LOGIN_FAIL);
+                    }
+                    //向客户端输出验证结果
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    objectOutputStream.writeObject(message);
+                    break;
+                }
+
             }
-            //向客户端输出验证结果
-            OutputStream outputStream = socket.getOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(message);
+
+
         }
     }
 }

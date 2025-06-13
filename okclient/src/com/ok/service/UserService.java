@@ -14,17 +14,21 @@ public class UserService {
             //和本机建立连接通信
             Socket socket = new Socket("127.0.0.1",8888);
 
+            Message message = new Message();
+            message.setMessageType(MessageType.LOGIN);
+            message.setUser(user);
+
             //获取输出流，向外输出内容
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(user);
+            objectOutputStream.writeObject(message);
             //通过socket连接的输入流，读入服务器的返回信息
             InputStream inputStream = socket.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-            Message message = (Message)objectInputStream.readObject();
+            Message acceptmessage = (Message)objectInputStream.readObject();
 
-            if(message.getMessageType()== MessageType.LOGIN_SUCCESS){
+            if(acceptmessage.getMessageType()== MessageType.LOGIN_SUCCESS){
                 return true;
             }else{
                 return false;
@@ -36,4 +40,5 @@ public class UserService {
 
         return false;
     }
+
 }
