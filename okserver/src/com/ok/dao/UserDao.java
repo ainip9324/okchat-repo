@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class UserDao {
@@ -108,6 +110,41 @@ public class UserDao {
         }
 
         return user;
+    }
+
+    //获取数据库里面的数据信息
+    public List<User> getUsers(){
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<User> users  = null;
+
+        try{
+            //获取连接
+            connection = JDBCUtil.getJdbcUtil().getConnection();
+            //准备数据库语句
+            StringBuffer stringBuffer = new StringBuffer(" select id,user_name,pwd,real_name from user");
+            preparedStatement = connection.prepareStatement(stringBuffer.toString());
+            //执行sql
+            resultSet = preparedStatement.executeQuery();
+            //
+            users = new ArrayList<>();
+            //遍历信息
+            while(resultSet.next()){
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUserName(resultSet.getString("user_name"));
+                user.setPwd(resultSet.getString("pwd"));
+                user.setRealname(resultSet.getString("real_name"));
+                users.add(user);
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return users;
     }
 
     //$$生成id，并保证id唯一,将自动生成一个八位或九位的id

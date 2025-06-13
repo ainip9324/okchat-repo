@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 import com.ok.common.Message;
 import com.ok.common.MessageType;
@@ -83,6 +84,17 @@ public class ServerClient extends JFrame {
                         message.setMessageType(MessageType.REGISTER_FAIL);
                         message.setContent("注册失败，账号已经被注册");
                     }
+                    //向客户端输出验证结果
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    objectOutputStream.writeObject(message);
+                    break;
+                }
+                case MessageType.GET_USERS:{
+                    Message message = new Message();
+                    List<User> users = userDao.getUsers();
+                    message.setUsers(users);
+
                     //向客户端输出验证结果
                     OutputStream outputStream = socket.getOutputStream();
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);

@@ -9,4 +9,6 @@ public interface MessageType {
     public static final int REGISTER = 4;
     public static final int REGISTER_SUCCESS = 2;
     public static final int REGISTER_FAIL = 3;
+
+    public static final int GET_USERS = 6;
 }
