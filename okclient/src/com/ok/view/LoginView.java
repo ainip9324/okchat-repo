@@ -59,7 +59,7 @@ public class LoginView extends JFrame {
 
                 UserService userService = new UserService();
                 if(userService.login(user)){
-                    LoginView.this.dispose();
+                    JOptionPane.showMessageDialog(LoginView.this,"用户登录成功","提示",JOptionPane.WARNING_MESSAGE);
                 }else{
                     JOptionPane.showMessageDialog(LoginView.this,"账号或密码错误","提示",JOptionPane.WARNING_MESSAGE);
                 }
