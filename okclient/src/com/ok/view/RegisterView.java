@@ -78,10 +78,10 @@ public class RegisterView extends JFrame {
                     Message acceptMessage = (Message)objectInputStream.readObject();
 
                     if(acceptMessage.getMessageType()==MessageType.REGISTER_SUCCESS){
-                        JOptionPane.showMessageDialog(RegisterView.this,"注册成功","提示",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(RegisterView.this,acceptMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
                         RegisterView.this.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(RegisterView.this,"注册失败","提示",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(RegisterView.this,acceptMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
                     }
 
                 }catch (Exception c){

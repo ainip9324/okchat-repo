@@ -71,6 +71,24 @@ public class ServerClient extends JFrame {
                     objectOutputStream.writeObject(message);
                     break;
                 }
+                case MessageType.REGISTER:{
+                    User user = requestMessage.getUser();
+
+                    Message message = new Message();
+                    if(userDao.getByUsername(user.getUserName())==null){
+                        userDao.inserUser(user);
+                        message.setMessageType(MessageType.REGISTER_SUCCESS);
+                        message.setContent("注册成功");
+                    }else{
+                        message.setMessageType(MessageType.REGISTER_FAIL);
+                        message.setContent("注册失败，账号已经被注册");
+                    }
+                    //向客户端输出验证结果
+                    OutputStream outputStream = socket.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    objectOutputStream.writeObject(message);
+                    break;
+                }
 
             }
 
