@@ -2,6 +2,7 @@ package com.ok.service;
 
 import com.ok.common.Message;
 import com.ok.common.MessageType;
+import com.ok.dao.MessageDao;
 import com.ok.dao.UserDao;
 import com.ok.po.User;
 import com.ok.util.SocketUtil;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ServerClientService {
 
     UserDao userDao = new UserDao();
+    MessageDao messageDao = new MessageDao();
 
     //启动服务端的服务，等待客户端的连接
     public void startServer() throws Exception{
@@ -74,7 +76,25 @@ public class ServerClientService {
                     //
                     TalkThreadCache.talkThreadCache.put(requestMessage.getUserName()+"-"+requestMessage.getFriendName(),talkThread);
 
+                    //在创建连接时，从数据库查未读留言
 
+                    //对面收己方的留言，朋友是己方
+                    List<Message> messages = messageDao.getMessages(requestMessage.getFriendName(),requestMessage.getUserName());
+                    //
+                    if(messages!=null&&messages.size()>0){
+                        Socket currentSocket = socket;
+                        Message responseMessage = new Message();
+                        responseMessage.setMessageType(MessageType.TALK_LEAVING_MESSAGE);
+                        responseMessage.setMessages(messages);
+                        //将留言信息返回给客户端
+                        SocketUtil.getSocketUtil().sendMessage(currentSocket,responseMessage);
+
+                        //信息已经传到了list里，可以改消息状态了
+                        for(int i = 0;i<messages.size();i++){
+                            Message message = messages.get(i);
+                            messageDao.updateMessageState(message);
+                        }
+                    }
                     break;
                 }
             }

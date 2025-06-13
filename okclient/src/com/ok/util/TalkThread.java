@@ -5,6 +5,7 @@ import com.ok.common.MessageType;
 
 import javax.swing.*;
 import java.net.Socket;
+import java.util.List;
 
 public class TalkThread extends Thread{
     Socket socket;
@@ -27,7 +28,13 @@ public class TalkThread extends Thread{
 
                 if(responseMessage.getMessageType()== MessageType.TALK){
                     jTextArea.append(responseMessage.getContent()+"\n");
-                }else if(responseMessage.getMessageType()== MessageType.TALK_CLOSE){
+                }else if(responseMessage.getMessageType()== MessageType.TALK_LEAVING_MESSAGE){
+                    List<Message> messages = responseMessage.getMessages();
+                    for(int i = 0;i<messages.size();i++){
+                        Message message = messages.get(i);
+                        jTextArea.append(message.getContent()+"\n");
+                    }
+                } else if(responseMessage.getMessageType()== MessageType.TALK_CLOSE){
                     this.isRun = false;
                 }
 

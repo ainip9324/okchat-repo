@@ -21,6 +21,8 @@ public class Message implements Serializable {
 
     private Integer isRead = 0;
 
+    private List<Message> messages;
+
     public int getMessageType() {
         return messageType;
     }
@@ -75,5 +77,13 @@ public class Message implements Serializable {
 
     public void setIsRead(Integer isRead) {
         this.isRead = isRead;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
