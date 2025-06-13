@@ -33,7 +33,7 @@ public class JDBCUtil {
 
     //获取数据库连接
     public Connection getConnection ()throws Exception{
-        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/okchat","ainip","123456");
+        return DriverManager.getConnection(PropertiesUtil.getPropertiesUtil().getValue("url"),PropertiesUtil.getPropertiesUtil().getValue("username"),PropertiesUtil.getPropertiesUtil().getValue("pwd"));
     }
 
     //关闭数据库连接
