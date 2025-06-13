@@ -15,4 +15,5 @@ public interface MessageType {
     public static final int TALK_CONNECTION = 7;
     public static final int TALK = 8;
     public static final int TALK_CLOSE = 9;
+    public static final int TALK_LEAVING_MESSAGE = 10;
 }
