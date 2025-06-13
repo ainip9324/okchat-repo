@@ -39,17 +39,23 @@ public class JDBCUtil {
     //关闭数据库连接
     public void closeConnection(ResultSet resultSet, Statement statement,Connection connection){
         try{
-            resultSet.close();
+            if(resultSet!=null){
+                resultSet.close();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             try{
-                statement.close();
+                if(statement!=null){
+                    statement.close();
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }finally {
                 try{
-                    connection.close();
+                    if(connection!=null){
+                        connection.close();
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }

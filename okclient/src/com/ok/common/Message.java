@@ -19,6 +19,8 @@ public class Message implements Serializable {
 
     private String friendName;
 
+    private Integer isRead = 0;
+
     public int getMessageType() {
         return messageType;
     }
@@ -65,5 +67,13 @@ public class Message implements Serializable {
 
     public void setFriendName(String friendName) {
         this.friendName = friendName;
+    }
+
+    public Integer getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Integer isRead) {
+        this.isRead = isRead;
     }
 }
