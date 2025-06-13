@@ -2,6 +2,7 @@ package com.ok.dao;
 
 import com.ok.po.User;
 import com.ok.util.JDBCUtil;
+import com.ok.util.CustomException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,8 @@ public class UserDao {
 
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            JDBCUtil.getJdbcUtil().closeConnection(resultSet,preparedStatement,connection);
         }
 
         return user;
@@ -76,6 +79,8 @@ public class UserDao {
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            JDBCUtil.getJdbcUtil().closeConnection(resultSet,preparedStatement,connection);
         }
     }
 
@@ -107,6 +112,8 @@ public class UserDao {
 
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            JDBCUtil.getJdbcUtil().closeConnection(resultSet,preparedStatement,connection);
         }
 
         return user;
@@ -142,6 +149,8 @@ public class UserDao {
 
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            JDBCUtil.getJdbcUtil().closeConnection(resultSet,preparedStatement,connection);
         }
 
         return users;
@@ -176,6 +185,8 @@ public class UserDao {
 
             } catch (Exception e) {
                 e.printStackTrace();
+            }finally {
+                JDBCUtil.getJdbcUtil().closeConnection(resultSet,preparedStatement,connection);
             }
         }
 
@@ -188,18 +199,4 @@ public class UserDao {
         return (int) (System.currentTimeMillis() % 100000000 + random.nextInt(100000000));
     }
 
-}
-
-
-class CustomException extends Exception {
-    private String errorMessage;
-
-    public CustomException(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    @Override
-    public String getMessage() {
-        return errorMessage;
-    }
 }

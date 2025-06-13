@@ -9,25 +9,15 @@ public class Message implements Serializable {
 
     private int messageType;
 
-    private String Content;
-
-    public String getContent() {
-        return Content;
-    }
-
-    public void setContent(String content) {
-        Content = content;
-    }
-
     private User user;
 
-    public User getUser() {
-        return user;
-    }
+    private String Content;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    private List<User> users;
+
+    private String userName;
+
+    private String friendName;
 
     public int getMessageType() {
         return messageType;
@@ -37,7 +27,21 @@ public class Message implements Serializable {
         this.messageType = messageType;
     }
 
-    private List<User> users;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getContent() {
+        return Content;
+    }
+
+    public void setContent(String content) {
+        Content = content;
+    }
 
     public List<User> getUsers() {
         return users;
@@ -45,5 +49,21 @@ public class Message implements Serializable {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getFriendName() {
+        return friendName;
+    }
+
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
     }
 }

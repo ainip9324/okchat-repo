@@ -5,10 +5,13 @@ import com.ok.common.MessageType;
 import com.ok.dao.UserDao;
 import com.ok.po.User;
 import com.ok.util.SocketUtil;
+import com.ok.util.TalkThread;
+import com.ok.util.TalkThreadCache;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+
 
 public class ServerClientService {
 
@@ -65,7 +68,15 @@ public class ServerClientService {
                     SocketUtil.getSocketUtil().sendMessage(socket,message);
                     break;
                 }
+                case MessageType.TALK_CONNECTION:{
+                    TalkThread talkThread = new TalkThread(socket);
+                    talkThread.start();
+                    //
+                    TalkThreadCache.talkThreadCache.put(requestMessage.getUserName()+"-"+requestMessage.getFriendName(),talkThread);
 
+
+                    break;
+                }
             }
 
 

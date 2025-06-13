@@ -7,6 +7,8 @@ import com.ok.util.SocketUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,9 +47,21 @@ public class FriendListView extends JFrame {
 
         jPanel = new JPanel(new GridLayout(users.size(),1,15,15));
         for(int i = 0;i<users.size();i++){
+            if(this.username.equals(users.get(i).getUserName())){
+                continue;
+            }
             ImageIcon imageIcon = new ImageIcon(FriendListView.class.getClassLoader().getResource("com/ok/images/tx.jpg"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT));
             JLabel jLabel = new JLabel(users.get(i).getUserName(),imageIcon,JLabel.LEFT);
+            jLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(e.getClickCount()==2){
+                        TalkView talkView = new TalkView(username,((JLabel)e.getSource()).getText());
+                        talkView.createFrame();
+                    }
+                }
+            });
             jPanel.add(jLabel);
         }
         //网格布局放入可滚动的面板中

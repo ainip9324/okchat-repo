@@ -67,7 +67,6 @@ public class LoginView extends JFrame {
                 }else{
                     JOptionPane.showMessageDialog(LoginView.this,"账号或密码错误","提示",JOptionPane.WARNING_MESSAGE);
                 }
-                super.mouseClicked(e);
             }
         });
 

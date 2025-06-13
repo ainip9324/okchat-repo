@@ -84,8 +84,6 @@ public class RegisterView extends JFrame {
                 }catch (Exception c){
                     c.printStackTrace();
                 }
-
-                super.mouseClicked(e);
             }
         });
         resetJButton = new JButton("重置");
@@ -95,7 +93,6 @@ public class RegisterView extends JFrame {
                 userNameJTextField.setText("");
                 pwdJPasswordField.setText("");
                 realNameJTextField.setText("");
-                super.mouseClicked(e);
             }
         });
 
@@ -107,6 +104,5 @@ public class RegisterView extends JFrame {
         this.setBounds(705,300,400,350);
         this.setVisible(true);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
