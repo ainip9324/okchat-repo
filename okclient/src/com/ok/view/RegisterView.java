@@ -3,6 +3,7 @@ package com.ok.view;
 import com.ok.common.Message;
 import com.ok.common.MessageType;
 import com.ok.po.User;
+import com.ok.util.SocketUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,19 +70,15 @@ public class RegisterView extends JFrame {
                     Socket socket = new Socket("127.0.0.1",8888);
 
                     //向服务端写注册信息
-                    OutputStream outputStream = socket.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-                    objectOutputStream.writeObject(message);
+                    SocketUtil.getSocketUtil().sendMessage(socket,message);
                     //接收服务端读注册反馈
-                    InputStream inputStream = socket.getInputStream();
-                    ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                    Message acceptMessage = (Message)objectInputStream.readObject();
+                    Message responseMessage = SocketUtil.getSocketUtil().getMessage(socket);
 
-                    if(acceptMessage.getMessageType()==MessageType.REGISTER_SUCCESS){
-                        JOptionPane.showMessageDialog(RegisterView.this,acceptMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
+                    if(responseMessage.getMessageType()==MessageType.REGISTER_SUCCESS){
+                        JOptionPane.showMessageDialog(RegisterView.this,responseMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
                         RegisterView.this.dispose();
                     }else{
-                        JOptionPane.showMessageDialog(RegisterView.this,acceptMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(RegisterView.this,responseMessage.getContent(),"提示",JOptionPane.WARNING_MESSAGE);
                     }
 
                 }catch (Exception c){

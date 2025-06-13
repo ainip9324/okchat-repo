@@ -64,8 +64,6 @@ public class LoginView extends JFrame {
                     FriendListView friendListView = new FriendListView(user.getUserName());
                     friendListView.createFrame();
 
-
-                    //JOptionPane.showMessageDialog(LoginView.this,"用户登录成功","提示",JOptionPane.WARNING_MESSAGE);
                 }else{
                     JOptionPane.showMessageDialog(LoginView.this,"账号或密码错误","提示",JOptionPane.WARNING_MESSAGE);
                 }

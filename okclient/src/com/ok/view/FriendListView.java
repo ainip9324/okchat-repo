@@ -3,6 +3,7 @@ package com.ok.view;
 import com.ok.common.Message;
 import com.ok.common.MessageType;
 import com.ok.po.User;
+import com.ok.util.SocketUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,15 +33,11 @@ public class FriendListView extends JFrame {
             Message message = new Message();
             message.setMessageType(MessageType.GET_USERS);
 
-            OutputStream outputStream = socket.getOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(message);
+            SocketUtil.getSocketUtil().sendMessage(socket,message);
 
             //获取输入和反馈
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            Message acceptMessage = (Message)objectInputStream.readObject();
-            users = acceptMessage.getUsers();
+            Message responseMessage = SocketUtil.getSocketUtil().getMessage(socket);
+            users = responseMessage.getUsers();
 
         }catch (Exception e){
             e.printStackTrace();

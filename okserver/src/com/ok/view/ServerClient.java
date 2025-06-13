@@ -14,6 +14,8 @@ import com.ok.common.Message;
 import com.ok.common.MessageType;
 import com.ok.dao.UserDao;
 import com.ok.po.User;
+import com.ok.service.ServerClientService;
+import com.ok.util.SocketUtil;
 
 public class ServerClient extends JFrame {
 
@@ -22,7 +24,7 @@ public class ServerClient extends JFrame {
         serverClient.createJFrame();
     }
 
-    UserDao userDao = new UserDao();
+    ServerClientService service = new ServerClientService();
 
     public void createJFrame(){
         JLabel jLabel = new JLabel("服务器已启动，监听在8888端口等待客户端连接",JLabel.CENTER);
@@ -36,75 +38,11 @@ public class ServerClient extends JFrame {
 
         //启动服务
         try{
-            this.server();
+            service.startServer();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    //服务器端连接方法
-    public void server() throws Exception{
-        //服务器监听在8888端口上
-        ServerSocket serverSocket = new ServerSocket(8888);
 
-        //保证持续工作
-        while(true){
-            Socket socket = serverSocket.accept();
-
-            //接收客户端的信息
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            Message requestMessage = (Message)objectInputStream.readObject();
-
-            switch (requestMessage.getMessageType()){
-                case MessageType.LOGIN:{
-                    User user = requestMessage.getUser();
-                    //验证
-                    Message message = new Message();
-                    if(userDao.login(user.getUserName(),user.getPwd())!=null){
-                        message.setMessageType(MessageType.LOGIN_SUCCESS);
-                    }else{
-                        message.setMessageType(MessageType.LOGIN_FAIL);
-                    }
-                    //向客户端输出验证结果
-                    OutputStream outputStream = socket.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-                    objectOutputStream.writeObject(message);
-                    break;
-                }
-                case MessageType.REGISTER:{
-                    User user = requestMessage.getUser();
-
-                    Message message = new Message();
-                    if(userDao.getByUsername(user.getUserName())==null){
-                        userDao.inserUser(user);
-                        message.setMessageType(MessageType.REGISTER_SUCCESS);
-                        message.setContent("注册成功");
-                    }else{
-                        message.setMessageType(MessageType.REGISTER_FAIL);
-                        message.setContent("注册失败，账号已经被注册");
-                    }
-                    //向客户端输出验证结果
-                    OutputStream outputStream = socket.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-                    objectOutputStream.writeObject(message);
-                    break;
-                }
-                case MessageType.GET_USERS:{
-                    Message message = new Message();
-                    List<User> users = userDao.getUsers();
-                    message.setUsers(users);
-
-                    //向客户端输出验证结果
-                    OutputStream outputStream = socket.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-                    objectOutputStream.writeObject(message);
-                    break;
-                }
-
-            }
-
-
-        }
-    }
 }
